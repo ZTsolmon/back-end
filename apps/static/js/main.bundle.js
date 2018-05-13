@@ -244,14 +244,14 @@ var AuthGuard = /** @class */ (function () {
 /***/ "./src/app/home/home.component.css":
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = "h1 {\n\ttext-align: center;\n}"
 
 /***/ }),
 
 /***/ "./src/app/home/home.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "  <div>\n    <a href=\"/home\" class=\"brand-logo center\">\n      <i class=\"material-icons\">directions_boat</i>Dynamo operation in Dunkirk</a>\n    <ul>\n      <li>\n        <button (click)=\"Logout()\" class=\"btn-large btn-submit\">Logout</button>\n      </li>\n    </ul>\n  </div>"
+module.exports = "\n<div class=\"title\">\n\t<h1>Туршилтын RESTful Вэб</h1>\n</div>\n\n<div>\n    <ul>\n      <li>\n        <button (click)=\"Logout()\" class=\"btn-large btn-submit\">Logout</button>\n      </li>\n    </ul>\n</div>"
 
 /***/ }),
 
@@ -291,7 +291,7 @@ var HomeComponent = /** @class */ (function () {
     };
     HomeComponent.prototype.Logout = function () {
         localStorage.removeItem('userToken');
-        this.toastr.success('Successfully logged out!');
+        this.toastr.success('Холболт амжилттай саллаа!');
         this.router.navigate(['/login']);
     };
     HomeComponent = __decorate([
@@ -416,7 +416,6 @@ var UserService = /** @class */ (function () {
         var token = 'Token ' + localStorage.getItem('userToken');
         var reqHeader = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': token });
         return this.http.get(this.rootUrl + '/api/ships/', { headers: reqHeader }).do(function (data) {
-            console.log("Registered: " + JSON.stringify(data));
         });
     };
     UserService.prototype.getUserDataWithToken = function (token) {
@@ -448,7 +447,7 @@ module.exports = ""
 /***/ "./src/app/user/sign-in/sign-in.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"isLoginError\" class=\"red-text center error-message\">\n  <i class=\"material-icons\">error</i> Incorrect username or password\n</div>\n<form #loginForm=\"ngForm\" class=\"col s12 white\" (ngSubmit)=\"OnSubmit(UserName.value,Password.value)\">\n  <div class=\"row\">\n    <div class=\"input-field col s12\">\n      <i class=\"material-icons prefix\">account_circle</i>\n      <input type=\"text\" #UserName ngModel name=\"UserName\" placeholder=\"Username\" required>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"input-field col s12\">\n      <i class=\"material-icons prefix\">vpn_key</i>\n      <input type=\"password\" #Password ngModel name=\"Password\" placeholder=\"Password\" required>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"input-field col s12\">\n      <button [disabled]=\"!loginForm.valid\" class=\"btn-large btn-submit\" type=\"submit\">Login</button>\n    </div>\n  </div>\n</form>"
+module.exports = "<div *ngIf=\"isLoginError\" class=\"red-text center error-message\">\n  <i class=\"material-icons\">error</i> Нэвтрэх нэр эсвэл нууц үг буруу байна\n</div>\n<form #loginForm=\"ngForm\" class=\"col s12 white\" (ngSubmit)=\"OnSubmit(UserName.value,Password.value)\">\n  <div class=\"row\">\n    <div class=\"input-field col s12\">\n      <i class=\"material-icons prefix\">account_circle</i>\n      <input type=\"text\" #UserName ngModel name=\"UserName\" placeholder=\"Хэрэглэгчийн нэр\" required>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"input-field col s12\">\n      <i class=\"material-icons prefix\">vpn_key</i>\n      <input type=\"password\" #Password ngModel name=\"Password\" placeholder=\"Нууц үг\" required>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"input-field col s12\">\n      <button [disabled]=\"!loginForm.valid\" class=\"btn-large btn-submit\" type=\"submit\">Нэвтрэх</button>\n    </div>\n  </div>\n</form>"
 
 /***/ }),
 
@@ -487,6 +486,7 @@ var SignInComponent = /** @class */ (function () {
         var _this = this;
         this.userService.userAuthentication(UserName, Password).subscribe(function (data) {
             localStorage.setItem('userToken', data.token);
+            _this.toastr.success('Системд амжилттай нэвтэрлээ!');
             _this.router.navigate(['/home']);
         }, function (err) {
             _this.isLoginError = true;
@@ -517,7 +517,7 @@ module.exports = ""
 /***/ "./src/app/user/sign-up/sign-up.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form class=\"col s12 white\" #userRegistrationForm=\"ngForm\" (ngSubmit)=\"OnSubmit(userRegistrationForm)\">\n  <div class=\"row\">\n    <div class=\"input-field col s6\">\n      <input class=\"validate\" type=\"text\" name=\"username\" #username=\"ngModel\" [(ngModel)]=\"user.username\" required>\n      <label data-error=\"Required field!\">UserName</label>\n    </div>\n    <div class=\"input-field col s6\">\n      <input class=\"validate\" type=\"password\" name=\"password\" #password=\"ngModel\" [(ngModel)]=\"user.password\" required minlength=\"3\">\n      <label [attr.data-error]=\"password.errors!=null?(password.errors.required?'Required field!':'Minimum 3 characters needed'):''\">Password</label>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"input-field col s12\">\n      <input class=\"validate\" type=\"text\" name=\"email\" #email=\"ngModel\" [(ngModel)]=\"user.email\" [pattern]=\"emailPattern\">\n      <label data-error=\"Invalid email!\">Email</label>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"input-field col s6\">\n      <input type=\"text\" name=\"first_name\" #first_name=\"ngModel\" [(ngModel)]=\"user.first_name\">\n      <label>First Name</label>\n    </div>\n    <div class=\"input-field col s6\">\n      <input type=\"text\" name=\"last_name\" #last_name=\"ngModel\" [(ngModel)]=\"user.last_name\">\n      <label>Last Name</label>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"input-field col s12\">\n      <button [disabled]=\"!userRegistrationForm.valid\" class=\"btn-large btn-submit\" type=\"submit\">Submit</button>\n    </div>\n  </div>\n</form>"
+module.exports = "<form class=\"col s12 white\" #userRegistrationForm=\"ngForm\" (ngSubmit)=\"OnSubmit(userRegistrationForm)\">\n  <div class=\"row\">\n    <div class=\"input-field col s6\">\n      <input class=\"validate\" type=\"text\" name=\"username\" #username=\"ngModel\" [(ngModel)]=\"user.username\" required>\n      <label data-error=\"Required field!\">Хэрэглэгчийн нэр</label>\n    </div>\n    <div class=\"input-field col s6\">\n      <input class=\"validate\" type=\"password\" name=\"password\" #password=\"ngModel\" [(ngModel)]=\"user.password\" required minlength=\"3\">\n      <label [attr.data-error]=\"password.errors!=null?(password.errors.required?'Required field!':'Minimum 3 characters needed'):''\">Нууц үг</label>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"input-field col s12\">\n      <input class=\"validate\" type=\"text\" name=\"email\" #email=\"ngModel\" [(ngModel)]=\"user.email\" [pattern]=\"emailPattern\">\n      <label data-error=\"Invalid email!\">Е-майл</label>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"input-field col s6\">\n      <input type=\"text\" name=\"first_name\" #first_name=\"ngModel\" [(ngModel)]=\"user.first_name\">\n      <label>Овог</label>\n    </div>\n    <div class=\"input-field col s6\">\n      <input type=\"text\" name=\"last_name\" #last_name=\"ngModel\" [(ngModel)]=\"user.last_name\">\n      <label>Нэр</label>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"input-field col s12\">\n      <button [disabled]=\"!userRegistrationForm.valid\" class=\"btn-large btn-submit\" type=\"submit\">Бүртгүүлэх</button>\n    </div>\n  </div>\n</form>"
 
 /***/ }),
 
@@ -603,7 +603,7 @@ module.exports = ""
 /***/ "./src/app/user/user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col s8 offset-s2\">\n      <div class=\"card grey lighten-2\">\n        <div class=\"card-tabs\">\n          <ul class=\"tabs tabs-fixed-width tabs-transparent\">\n            <li class=\"tab\">\n              <a routerLink='/login'  routerLinkActive='active'>Sign In</a>\n            </li>\n            <li class=\"tab\">\n              <a  routerLink='/signup'  routerLinkActive='active'>Sign Up</a>\n            </li>\n          </ul>\n        </div>\n        <div class=\"card-content white\">\n          <div class=\"row\">\n            <router-outlet></router-outlet>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>"
+module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col s8 offset-s2\">\n      <div class=\"card grey lighten-2\">\n        <div class=\"card-tabs\">\n          <ul class=\"tabs tabs-fixed-width tabs-transparent\">\n            <li class=\"tab\">\n              <a routerLink='/login'  routerLinkActive='active'>Нэвтрэх</a>\n            </li>\n            <li class=\"tab\">\n              <a  routerLink='/signup'  routerLinkActive='active'>Бүртгүүлэх</a>\n            </li>\n          </ul>\n        </div>\n        <div class=\"card-content white\">\n          <div class=\"row\">\n            <router-outlet></router-outlet>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
